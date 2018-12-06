@@ -42,12 +42,30 @@ public final class MainActivity extends AppCompatActivity {
         // Load the main layout for our activity
         setContentView(R.layout.activity_main);
 
-        // Attach the handler to our UI button
-        final Button startAPICall = findViewById(R.id.generateRandomPair);
-        startAPICall.setOnClickListener(new View.OnClickListener() {
+        // Attach the handler to our quote button
+        final Button buttonQuote = findViewById(R.id.buttonQuote);
+        buttonQuote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                Log.d(TAG, "Quote button clicked");
+                startQuoteAPICall();
+            }
+        });
+        // Attach the handler to our image button
+        final Button buttonImage = findViewById(R.id.buttonImage);
+        buttonImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 Log.d(TAG, "Image button clicked");
+                startImageAPICall();
+            }
+        });
+        // Attach the handler to our both button
+        final Button buttonBoth = findViewById(R.id.buttonBoth);
+        buttonBoth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                Log.d(TAG, "Both button clicked");
                 startImageAPICall();
                 startQuoteAPICall();
             }
