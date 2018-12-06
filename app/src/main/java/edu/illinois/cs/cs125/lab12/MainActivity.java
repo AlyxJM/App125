@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -13,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -26,6 +28,9 @@ public final class MainActivity extends AppCompatActivity {
 
     /** Request queue for our network requests. */
     private static RequestQueue requestQueue;
+
+    /** Variable to store quote result of API. */
+    private String quote = "";
 
     /**
      * Run when our activity comes into view.
@@ -44,11 +49,13 @@ public final class MainActivity extends AppCompatActivity {
 
         // Attach the handler to our quote button
         final Button buttonQuote = findViewById(R.id.buttonQuote);
+        final TextView quoteTextView = findViewById(R.id.quoteTextView);
         buttonQuote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 Log.d(TAG, "Quote button clicked");
                 startQuoteAPICall();
+                quoteTextView.setText(quote);
             }
         });
         // Attach the handler to our image button
@@ -114,6 +121,13 @@ public final class MainActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(final JSONArray response) {
                             Log.d(TAG, response.toString());
+                            try {
+                                Log.d(TAG, response.getJSONObject(0)
+                                .get("content").toString());
+                                quote = response.getJSONObject(0).get("content").toString();
+                            } catch (Exception e) {
+                                Log.e(TAG, "Problem parsing JSON", e);
+                            }
 
                         }
                     }, new Response.ErrorListener() {
