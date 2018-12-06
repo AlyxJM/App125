@@ -14,7 +14,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,6 +30,8 @@ public final class MainActivity extends AppCompatActivity {
 
     /** Variable to store quote result of API. */
     private String quote = "";
+    /**Variable to store url result of Image API. */
+    private String url = "";
 
     /**
      * Run when our activity comes into view.
@@ -50,6 +51,7 @@ public final class MainActivity extends AppCompatActivity {
         // Attach the handler to our quote button
         final Button buttonQuote = findViewById(R.id.buttonQuote);
         final TextView quoteTextView = findViewById(R.id.quoteTextView);
+
         buttonQuote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -94,6 +96,14 @@ public final class MainActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(final JSONObject response) {
                             Log.d(TAG, response.toString());
+                            try {
+                                Log.d(TAG, response.getJSONObject("urls")
+                                        .get("regular").toString());
+                                url = response.getJSONObject("urls")
+                                    .get("regular").toString();
+                            } catch (Exception e) {
+                                Log.e(TAG, "Problem parsing JSON", e);
+                            }
                         }
                     }, new Response.ErrorListener() {
                         @Override
@@ -123,7 +133,7 @@ public final class MainActivity extends AppCompatActivity {
                             Log.d(TAG, response.toString());
                             try {
                                 Log.d(TAG, response.getJSONObject(0)
-                                .get("content").toString());
+                                    .get("content").toString());
                                 quote = response.getJSONObject(0).get("content").toString();
                             } catch (Exception e) {
                                 Log.e(TAG, "Problem parsing JSON", e);
