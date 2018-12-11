@@ -139,7 +139,12 @@ public final class MainActivity extends AppCompatActivity {
                             try {
                                 Log.d(TAG, response.getJSONObject(0)
                                     .get("content").toString());
-                                quote = response.getJSONObject(0).get("content").toString();
+                                //quote = response.getJSONObject(0).get("content").toString();
+                                String q = response.getJSONObject(0).get("content").toString();
+                                q = q.replaceAll("<p>", "");
+                                q = q.replaceAll("</p>", "");
+                                q = q.replaceAll("[0-9]", "");
+                                quote = q;
                                 quoteTextView.setText(quote);
                             } catch (Exception e) {
                                 Log.e(TAG, "Problem parsing JSON", e);
